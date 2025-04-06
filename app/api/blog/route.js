@@ -11,16 +11,23 @@ const LoadDB = async()=>{
 
 LoadDB();
 
+//API Endpoint to get all blogs
 export async function GET(request){
     
-    console.log("Blog GET HIT")
-    return NextResponse.json({
-        msg:"API Working"
-    })
+    const blogId = request.nextUrl.searchParams.get("id");
+
+    if(blogId) {
+        const blog = await BlogModel.findById(blogId);
+        return NextResponse.json(blog);
+    }else{
+        const blogs = await BlogModel.find({});
+        return NextResponse.json({ blogs})
+    }
 }
 
-export async function POST(request){
 
+//API Endpoint For Uploading Blogs
+export async function POST(request){
     const formData = await request.formData();
     const timestamp = Date.now();
     const image = formData.get('image');
@@ -50,3 +57,4 @@ export async function POST(request){
 }
 
 
+//Creating API Endpoint to delete Blo
