@@ -12,6 +12,16 @@ const page = () => {
     setBlogs(response.data.blogs);
   }
 
+  const deleteBlog = async(mongoId)=>{
+    const response = await axios.delete('/api/blog',{
+      params:{
+        id:mongoId
+      }
+    })
+    toast.success(response.data.msg);
+    fetchBlogs();
+  }
+
   useEffect(()=>{
     fetchBlogs()
   },[])
@@ -38,7 +48,7 @@ const page = () => {
           </thead>
           <tbody>
             {blogs.map((item, index)=>{
-              return <BlogTableItem key={index} mongoId={item._id} title={item.title} author={item.author} date={item.date}/>
+              return <BlogTableItem key={index} mongoId={item._id} title={item.title} author={item.author} date={item.date}dele deleteBlog={deleteBlog}/>
             })}
           </tbody>
         </table>
